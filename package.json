@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "react-native": "^0.74.3"
+  },
+  "devDependencies": {
+    "expo-cli": "^6.3.10"
+  }
+}
