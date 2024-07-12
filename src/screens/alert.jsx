@@ -1,19 +1,57 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const Alert = () => {
   return (
-    <View>
-      <Text style={styles.alerttext}>Alert</Text>
+    <View style={styles.container}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.header}>Alerts</Text>
+        <TouchableOpacity>
+         <View style={styles.newAlertContainer}>
+           <Text style={styles.newAlertText}>New Alert</Text>
+         </View>
+         </TouchableOpacity>
+       </View>
+      <View style={styles.SusContainer}>
+        <Text style={styles.SusText}>Suspicious Activity</Text>
+      </View>
     </View>
-  )
-}
+  );
+};
 
-export default Alert
+export default Alert;
 
 const styles = StyleSheet.create({
-  alerttext:{
-    marginTop:30,
-    fontSize:30
-  }
-})
+  container: {
+    padding: 20,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between', 
+  },
+  header: {
+    marginTop: 40,
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  newAlertContainer: {
+    backgroundColor: 'blue',
+    marginTop: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+    paddingHorizontal: 10,
+  },
+  newAlertText: {
+    color: 'white',
+    fontSize: 17,
+  },
+  SusContainer: {
+    marginTop: 60,
+  },
+  SusText: {
+    fontSize: 18,
+    fontWeight:"700"
+  },
+});

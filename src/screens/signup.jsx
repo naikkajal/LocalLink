@@ -10,6 +10,7 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [location, setLocation] = useState(null); // State to store user's location
   const navigation = useNavigation();
+  
 
   useEffect(() => {
     // Function to fetch user's current location
@@ -75,12 +76,13 @@ const Signup = () => {
             pinColor="red" // Custom red color for the marker
           />
 
-          {/* Example Polygon to show restricted area */}
+          {/* Polygon to show 1 km² area */}
           <Polygon
             coordinates={[
-              { latitude: location.coords.latitude + 0.001, longitude: location.coords.longitude + 0.001 },
-              { latitude: location.coords.latitude + 0.002, longitude: location.coords.longitude + 0.002 },
-              { latitude: location.coords.latitude + 0.001, longitude: location.coords.longitude - 0.001 },
+              { latitude: location.coords.latitude + 0.0045, longitude: location.coords.longitude + 0.0045 },
+              { latitude: location.coords.latitude + 0.0045, longitude: location.coords.longitude - 0.0045 },
+              { latitude: location.coords.latitude - 0.0045, longitude: location.coords.longitude - 0.0045 },
+              { latitude: location.coords.latitude - 0.0045, longitude: location.coords.longitude + 0.0045 },
             ]}
             fillColor="rgba(0, 0, 255, 0.3)"
             strokeColor="blue"
