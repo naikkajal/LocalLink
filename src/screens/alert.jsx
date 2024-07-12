@@ -14,6 +14,6 @@ export default Alert
 const styles = StyleSheet.create({
   alerttext:{
     marginTop:30,
-    fontSize:20
+    fontSize:30
   }
 })
