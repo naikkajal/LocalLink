@@ -1,7 +1,8 @@
-import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { auth } from '../../firebase';  
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -9,8 +10,7 @@ const Login = () => {
   const navigation = useNavigation();
 
   const handleLogin = () => {
-    auth
-      .signInWithEmailAndPassword(email, password)
+    signInWithEmailAndPassword(auth, email, password)
       .then(userCredentials => {
         const user = userCredentials.user;
         console.log('Logged in with:', user.email);
