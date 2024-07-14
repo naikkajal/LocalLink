@@ -3,21 +3,21 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View, FlatList } from 'r
 import { firestore, auth } from '../../firebase'; 
 import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from 'firebase/firestore';
 
-const Alert = () => {
-  const [alertText, setAlertText] = useState('');
-  const [alerts, setAlerts] = useState([]);
+const EventScreen = () => {
+  const [eventText, setEventText] = useState('');
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    const q = query(collection(firestore, 'alerts'), orderBy('timestamp', 'desc'));
+    const q = query(collection(firestore, 'events'), orderBy('timestamp', 'desc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      setAlerts(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      setEvents(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     });
 
     return () => unsubscribe();
   }, []);
 
-  const handleAddAlert = async () => {
-    if (alertText.trim() === '') return;
+  const handleAddEvent = async () => {
+    if (eventText.trim() === '') return;
 
     try {
       const currentUser = auth.currentUser;
@@ -27,44 +27,44 @@ const Alert = () => {
         return;
       }
 
-      await addDoc(collection(firestore, 'alerts'), {
-        text: alertText,
+      await addDoc(collection(firestore, 'events'), {
+        text: eventText,
         timestamp: serverTimestamp(),
         email: currentUser.email,
       });
 
-      console.log('Alert added successfully');
-      setAlertText('');
+      console.log('Event added successfully');
+      setEventText('');
     } catch (error) {
-      console.error('Error adding alert: ', error);
+      console.error('Error adding event: ', error);
     }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.header}>Alerts</Text>
-        <TouchableOpacity onPress={handleAddAlert}>
-          <View style={styles.newAlertContainer}>
-            <Text style={styles.newAlertText}>New Alert</Text>
+        <Text style={styles.header}>Events</Text>
+        <TouchableOpacity onPress={handleAddEvent}>
+          <View style={styles.newEventContainer}>
+            <Text style={styles.newEventText}>New Event</Text>
           </View>
         </TouchableOpacity>
       </View>
 
       <TextInput
         style={styles.input}
-        placeholder='Enter alert text'
-        value={alertText}
-        onChangeText={setAlertText}
+        placeholder='Enter event text'
+        value={eventText}
+        onChangeText={setEventText}
       />
 
       <FlatList
-        data={alerts}
+        data={events}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <View style={styles.alertItem}>
-            <Text style={styles.alertText}>{item.text}</Text>
-            <Text style={styles.alertTimestamp}>
+          <View style={styles.eventItem}>
+            <Text style={styles.eventText}>{item.text}</Text>
+            <Text style={styles.eventTimestamp}>
               {item.timestamp?.toDate().toLocaleString()}, by {item.email}
             </Text>
           </View>
@@ -74,7 +74,7 @@ const Alert = () => {
   );
 };
 
-export default Alert;
+export default EventScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
   },
-  newAlertContainer: {
+  newEventContainer: {
     backgroundColor: 'blue',
     justifyContent: 'center',
     alignItems: 'center',
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 5,
   },
-  newAlertText: {
+  newEventText: {
     color: 'white',
     fontSize: 17,
   },
@@ -111,18 +111,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginVertical: 20,
   },
-  alertItem: {
+  eventItem: {
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
-  alertText: {
+  eventText: {
     fontSize: 18,
   },
-  alertTimestamp: {
+  eventTimestamp: {
     fontSize: 12,
     color: 'gray',
   },
 });
-
-
