@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, SectionList, Alert } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, FlatList, Alert } from 'react-native';
 import { firestore, auth } from '../../firebase'; 
 import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, deleteDoc, doc } from 'firebase/firestore';
 
@@ -8,9 +8,9 @@ const ChatScreen = () => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    const q = query(collection(firestore, 'chats'), orderBy('timestamp', 'asc'));
+    const q = query(collection(firestore, 'chats'), orderBy('timestamp', 'desc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      setMessages(groupMessagesByDate(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))));
+      setMessages(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     });
 
     return () => unsubscribe();
@@ -51,51 +51,24 @@ const ChatScreen = () => {
     }
   };
 
-  const groupMessagesByDate = (messages) => {
-    const groupedMessages = {};
-
-    messages.forEach(message => {
-      const date = message.timestamp?.toDate().toLocaleDateString();
-      
-      if (!groupedMessages[date]) {
-        groupedMessages[date] = [];
-      }
-      
-      groupedMessages[date].push(message);
-    });
-
-    return Object.keys(groupedMessages).map(date => ({
-      title: date === new Date().toLocaleDateString() ? 'Today' : date,
-      data: groupedMessages[date],
-    }));
-  };
-
   const renderMessage = ({ item }) => (
-    <TouchableOpacity
-      style={styles.messageItem}
-      onLongPress={() => handleLongPressMessage(item.id)}
-    >
+    <View style={styles.messageItem}>
       <Text style={styles.messageUser}>{item.email}</Text>
       <Text style={styles.messageText}>{item.text}</Text>
       <Text style={styles.messageTimestamp}>
         {item.timestamp?.toDate().toLocaleTimeString()}
       </Text>
-    </TouchableOpacity>
-  );
-
-  const renderSectionHeader = ({ section: { title } }) => (
-    <View style={styles.sectionHeader}>
-      <Text style={styles.sectionHeaderText}>{title}</Text>
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <SectionList
-        sections={messages}
+      <Text style={styles.header}>Today</Text>
+      <FlatList
+        data={messages}
         keyExtractor={item => item.id}
         renderItem={renderMessage}
-        renderSectionHeader={renderSectionHeader}
+        inverted
       />
       <View style={styles.inputContainer}>
         <TextInput
@@ -119,7 +92,12 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     backgroundColor: '#ECE5DD',
-    marginTop: 20
+  },
+  header: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: 10,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -169,17 +147,5 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     marginTop: 5,
   },
-  sectionHeader: {
-    backgroundColor: '#ECE5DD',
-    padding: 5,
-    borderRadius: 5,
-    marginVertical: 5,
-    marginTop: 20
-  },
-  sectionHeaderText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#228b22',
-    textAlign: "center"
-  },
 });
+
