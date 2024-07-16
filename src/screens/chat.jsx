@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: 'gray',
     textAlign: 'right',
-    marginTop: 5,
+    marginTop: 6,
   },
 });
 
