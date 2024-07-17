@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { auth, firestore } from '../../firebase'; // Ensure you import auth and firestore from firebase
+import { auth, firestore } from '../../firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import MapView, { Marker, Polygon } from 'react-native-maps';
 import * as Location from 'expo-location';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [location, setLocation] = useState(null); // State to store user's location
+  const [location, setLocation] = useState(null);
   const navigation = useNavigation();
-  
 
   useEffect(() => {
-    // Function to fetch user's current location
     const fetchLocation = async () => {
       try {
         let { status } = await Location.requestForegroundPermissionsAsync();
@@ -43,11 +42,25 @@ const Signup = () => {
       return;
     }
 
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(userCredentials => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(async (userCredentials) => {
         const user = userCredentials.user;
         console.log('Registered with:', user.email);
+
+        if (location) {
+          await firestore.collection('users').doc(user.uid).set({
+            email: user.email,
+            location: {
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+            },
+          });
+        } else {
+          await firestore.collection('users').doc(user.uid).set({
+            email: user.email,
+          });
+        }
+
         navigation.navigate("Alert");
       })
       .catch(error => alert(error.message));
@@ -55,7 +68,6 @@ const Signup = () => {
 
   return (
     <View style={styles.container}>
-      {/* MapView to display the user's location */}
       {location && (
         <MapView
           style={styles.map}
@@ -66,17 +78,14 @@ const Signup = () => {
             longitudeDelta: 0.05,
           }}
         >
-          {/* Marker to show user's current location */}
           <Marker
             coordinate={{
               latitude: location.coords.latitude,
               longitude: location.coords.longitude,
             }}
             title="Your Location"
-            pinColor="red" // Custom red color for the marker
+            pinColor="red"
           />
-
-          {/* Polygon to show 1 km² area */}
           <Polygon
             coordinates={[
               { latitude: location.coords.latitude + 0.0045, longitude: location.coords.longitude + 0.0045 },
@@ -91,9 +100,9 @@ const Signup = () => {
         </MapView>
       )}
       
-      {/* Sign Up Form */}
       <Text style={styles.text}>Create Account</Text>
       <Text style={styles.subtext}>Just a few quick things to get started</Text>
+      <TextInput style={styles.input} placeholder='Name'/>
       <TextInput
         style={styles.input}
         placeholder='Email'
@@ -122,34 +131,34 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff', // Background color of the container
+    backgroundColor: '#fff',
   },
   map: {
     width: '100%',
     height: 300,
-    borderRadius: 10, // Rounded corners for the map container
+    borderRadius: 10,
     marginBottom: 20,
   },
   text: {
     fontSize: 24,
     fontWeight: 'bold',
     marginTop: 20,
-    color: 'firebrick', // Color for the title text
+    color: 'firebrick',
   },
   subtext: {
     fontSize: 16,
     marginTop: 10,
     marginBottom: 20,
-    color: 'gray', // Color for the subtitle text
+    color: 'gray',
   },
   input: {
     width: '80%',
     height: 40,
-    borderColor: 'lightgrey', // Border color for input fields
+    borderColor: 'lightgrey',
     borderWidth: 1,
     marginBottom: 10,
     paddingLeft: 10,
-    borderRadius: 50, // Rounded corners for input fields
+    borderRadius: 50,
   },
   button: {
     backgroundColor: 'firebrick',
@@ -158,7 +167,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 10,
-    borderRadius: 50, // Rounded corners for the button
+    borderRadius: 50,
   },
   buttonText: {
     color: 'white',
@@ -168,7 +177,7 @@ const styles = StyleSheet.create({
   registerText: {
     marginTop: 20,
     textDecorationLine: 'underline',
-    color: 'blue', // Color for the register text
+    color: 'blue',
   },
 });
 

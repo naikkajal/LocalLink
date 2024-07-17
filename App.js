@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -16,6 +15,7 @@ import ProfileScreen from './src/screens/profile';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+// Stack Navigator for Authentication
 const AuthStack = () => (
   <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Login" component={Login} />
@@ -80,4 +80,3 @@ const App = () => {
 };
 
 export default App;
-
