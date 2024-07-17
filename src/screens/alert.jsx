@@ -6,6 +6,7 @@ import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from 
 const Alert = () => {
   const [alertText, setAlertText] = useState('');
   const [alerts, setAlerts] = useState([]);
+  const [showInput, setShowInput] = useState(false);
 
   useEffect(() => {
     const q = query(collection(firestore, 'alerts'), orderBy('timestamp', 'desc'));
@@ -35,6 +36,7 @@ const Alert = () => {
 
       console.log('Alert added successfully');
       setAlertText('');
+      setShowInput(false);
     } catch (error) {
       console.error('Error adding alert: ', error);
     }
@@ -44,19 +46,26 @@ const Alert = () => {
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Alerts</Text>
-        <TouchableOpacity onPress={handleAddAlert}>
+        <TouchableOpacity onPress={() => setShowInput(true)}>
           <View style={styles.newAlertContainer}>
             <Text style={styles.newAlertText}>New Alert</Text>
           </View>
         </TouchableOpacity>
       </View>
 
-      <TextInput
-        style={styles.input}
-        placeholder='Enter alert text'
-        value={alertText}
-        onChangeText={setAlertText}
-      />
+      {showInput && (
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder='Enter alert text'
+            value={alertText}
+            onChangeText={setAlertText}
+          />
+          <TouchableOpacity onPress={handleAddAlert}>
+            <Text style={styles.addButton}>+</Text>
+          </TouchableOpacity>
+        </View>
+      )}
 
       <FlatList
         data={alerts}
@@ -74,50 +83,54 @@ const Alert = () => {
   );
 };
 
-export default Alert;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    marginTop: 50,
   },
   headerContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   header: {
-    fontSize: 30,
+    fontSize: 24,
     fontWeight: 'bold',
   },
   newAlertContainer: {
-    backgroundColor: 'blue',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 50,
-    paddingHorizontal: 10,
+    backgroundColor: '#4CAF50',
+    padding: 10,
     borderRadius: 5,
   },
   newAlertText: {
-    color: 'white',
-    fontSize: 17,
+    color: '#fff',
+    fontSize: 16,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   input: {
-    height: 50,
+    flex: 1,
+    height: 40,
     borderColor: 'gray',
     borderWidth: 1,
-    borderRadius: 5,
     paddingHorizontal: 10,
-    marginVertical: 20,
+  },
+  addButton: {
+    marginLeft: 10,
+    fontSize: 30,
+    color: '#4CAF50',
   },
   alertItem: {
-    padding: 15,
+    padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
   alertText: {
-    fontSize: 18,
+    fontSize: 16,
   },
   alertTimestamp: {
     fontSize: 12,
@@ -125,4 +138,4 @@ const styles = StyleSheet.create({
   },
 });
 
-
+export default Alert;
