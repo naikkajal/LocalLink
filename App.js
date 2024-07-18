@@ -17,6 +17,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+// Stack Navigator for Authentication
 const AuthStack = () => (
   <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Login" component={Login} />
@@ -85,4 +86,3 @@ const App = () => {
 
 };
 export default App;
-
