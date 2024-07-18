@@ -11,6 +11,7 @@ import Alert from './src/screens/alert';
 import EventScreen from './src/screens/events';
 import ChatScreen from './src/screens/chat';
 import ProfileScreen from './src/screens/profile';
+import SplashScreen from './src/screens/splashscreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -23,7 +24,6 @@ const AuthStack = () => (
   </Stack.Navigator>
 );
 
-// Bottom Tab Navigator for Main App Screens
 const MainTabs = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
@@ -55,7 +55,6 @@ const MainTabs = () => (
   </Tab.Navigator>
 );
 
-// Main App Component
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -74,7 +73,11 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      {isLoggedIn ? <MainTabs /> : <AuthStack />}
+      <Stack.Navigator initialRouteName="SplashScreen" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="SplashScreen" component={SplashScreen} />
+        <Stack.Screen name="AuthStack" component={AuthStack} />
+        <Stack.Screen name="MainTabs" component={MainTabs} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
