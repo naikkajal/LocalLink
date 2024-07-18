@@ -12,6 +12,7 @@ import EventScreen from './src/screens/events';
 import ChatScreen from './src/screens/chat';
 import ProfileScreen from './src/screens/profile';
 import SplashScreen from './src/screens/splashscreen';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -71,6 +72,7 @@ const App = () => {
   }
 
   return (
+   <SafeAreaProvider>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="SplashScreen" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
@@ -78,8 +80,9 @@ const App = () => {
         <Stack.Screen name="MainTabs" component={MainTabs} />
       </Stack.Navigator>
     </NavigationContainer>
+    </SafeAreaProvider>
   );
-};
 
+};
 export default App;
 
