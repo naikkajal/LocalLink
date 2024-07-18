@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { auth } from '../../firebase';  
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -21,6 +21,7 @@ const Login = () => {
 
   return (
     <View style={styles.welcontainer}>
+      <Image source={require('../images/connectt.png')} style={styles.connect} />
       <Text style={styles.weltext}>Welcome</Text>
       <Text style={styles.logtext}>Sign in to your Account</Text>
       <View style={styles.usercontainer}>
@@ -43,18 +44,14 @@ const Login = () => {
         />  
       </View>
       <Text style={styles.forgottext}>Forgot Password?</Text>
-      <View style={styles.signinbutton}>
-        <TouchableOpacity onPress={handleLogin}>
-          <Text style={styles.signintext}>Sign In</Text>
-        </TouchableOpacity>
-      </View>
-      <View>
-        <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
-          <Text style={styles.createtext}>
-            Don't have an Account?<Text style={{ textDecorationLine: "underline" }}>Create</Text>
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity onPress={handleLogin} style={styles.signinbutton}>
+        <Text style={styles.signintext}>Sign In</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+        <Text style={styles.createtext}>
+          Don't have an Account?<Text style={{ textDecorationLine: "underline" }}> Create</Text>
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -63,24 +60,28 @@ export default Login;
 
 const styles = StyleSheet.create({
   welcontainer: {
-    alignContent: "center"
+    flex: 1,
+    backgroundColor: 'white',
+    justifyContent: 'center'
   },
   weltext: {
     textAlign: "center",
-    marginTop: 160,
+    marginTop: 120,
     fontSize: 35,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    color:"darkblue"
   },
   logtext: {
     textAlign: "center",
     marginTop: 10,
     fontSize: 20,
-    fontWeight: "bold"
-  },
+    fontWeight: "bold",
+    color: "black"
+  },   
   usercontainer: {
     backgroundColor: "lightgrey",
     flexDirection: "row",
-    marginTop: 70,
+    marginTop: 50,
     height: 60,
     marginHorizontal: 50,
     borderRadius: 50
@@ -104,21 +105,26 @@ const styles = StyleSheet.create({
     color: "darkblue"
   },
   signinbutton: { 
-    backgroundColor: "firebrick",
+    backgroundColor: "darkblue",
     height: 50,
     marginTop: 30,
     marginHorizontal: 50,
     borderRadius: 50,
     alignItems: "center",
+    justifyContent: 'center'
   },
   signintext: {
-    textAlign: "center",
     color: "white",
     fontSize: 20,
-    marginVertical: 10
   },
   createtext: {
     textAlign: "center",
-    marginTop:200
+    marginTop: 30,
+  },
+  connect: {
+    width: 430,
+    height: 225,
+    position: "absolute",
+    top: 40
   }
 });
