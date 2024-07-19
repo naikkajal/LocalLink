@@ -13,25 +13,21 @@ import ChatScreen from './src/screens/chat';
 import ProfileScreen from './src/screens/profile';
 import SplashScreen from './src/screens/splashscreen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// Stack Navigator for Authentication
 const AuthStack = () => (
   <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Login" component={Login} />
     <Stack.Screen name="Signup" component={Signup} />
   </Stack.Navigator>
 );
-
 const MainTabs = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
       headerShown: false,
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
-
         if (route.name === 'Alerts') {
           iconName = focused ? 'notifications' : 'notifications-outline';
         } else if (route.name === 'Events') {
@@ -41,7 +37,6 @@ const MainTabs = () => (
         } else if (route.name === 'Profile') {
           iconName = focused ? 'person' : 'person-outline';
         }
-
         return <Ionicons name={iconName} size={size} color={color} />;
       },
       tabBarActiveTintColor: 'blue',
@@ -55,11 +50,9 @@ const MainTabs = () => (
     <Tab.Screen name="Profile" component={ProfileScreen} />
   </Tab.Navigator>
 );
-
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
       setIsLoggedIn(!!user);
@@ -67,11 +60,9 @@ const App = () => {
     });
     return () => unsubscribe();
   }, []);
-
   if (loading) {
     return null; // Or a loading spinner
   }
-
   return (
    <SafeAreaProvider>
     <NavigationContainer>
@@ -85,4 +76,7 @@ const App = () => {
   );
 
 };
+
 export default App;
+
+
