@@ -14,7 +14,7 @@ const Login = () => {
       .then(userCredentials => {
         const user = userCredentials.user;
         console.log('Logged in with:', user.email);
-        navigation.navigate("Alert");
+        navigation.navigate("MainTabs");
       })
       .catch(error => alert(error.message));
   };

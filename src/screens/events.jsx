@@ -6,9 +6,7 @@ import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from 
 const EventScreen = () => {
   const [eventText, setEventText] = useState('');
   const [events, setEvents] = useState([]);
-
   const [showInput, setShowInput] = useState(false);
-
 
   useEffect(() => {
     const q = query(collection(firestore, 'events'), orderBy('timestamp', 'desc'));
@@ -38,9 +36,7 @@ const EventScreen = () => {
 
       console.log('Event added successfully');
       setEventText('');
-
       setShowInput(false);
-
     } catch (error) {
       console.error('Error adding event: ', error);
     }
@@ -50,17 +46,12 @@ const EventScreen = () => {
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Events</Text>
-
         <TouchableOpacity onPress={() => setShowInput(true)}>
-
-        <TouchableOpacity onPress={handleAddEvent}>
-
           <View style={styles.newEventContainer}>
             <Text style={styles.newEventText}>New Event</Text>
           </View>
         </TouchableOpacity>
       </View>
-
 
       {showInput && (
         <View style={styles.inputContainer}>
@@ -75,14 +66,6 @@ const EventScreen = () => {
           </TouchableOpacity>
         </View>
       )}
-
-      <TextInput
-        style={styles.input}
-        placeholder='Enter event text'
-        value={eventText}
-        onChangeText={setEventText}
-      />
-
 
       <FlatList
         data={events}
@@ -106,7 +89,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-
     marginTop: 40,
   },
   headerContainer: {
@@ -114,47 +96,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
-  },
-  header: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginLeft: 13,
-  },
-  newEventContainer: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-  },
-  newEventText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    paddingHorizontal: 10,
-  },
-  addButton: {
-    marginLeft: 10,
-    fontSize: 30,
-    color: '#4CAF50',
-  },
-  eventItem: {
-    padding: 10,
-
-    marginTop: 50,
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
   },
   header: {
     fontSize: 30,
@@ -172,7 +113,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 17,
   },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
   input: {
+    flex: 1,
     height: 50,
     borderColor: 'gray',
     borderWidth: 1,
@@ -180,18 +127,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginVertical: 20,
   },
+  addButton: {
+    marginLeft: 10,
+    fontSize: 30,
+    color: '#4CAF50',
+  },
   eventItem: {
     padding: 15,
-
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
   eventText: {
-
-    fontSize: 16,
-
     fontSize: 18,
-
   },
   eventTimestamp: {
     fontSize: 12,
