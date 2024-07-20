@@ -13,6 +13,7 @@ import ChatScreen from './src/screens/chat';
 import ProfileScreen from './src/screens/profile';
 import SplashScreen from './src/screens/splashscreen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -22,6 +23,7 @@ const AuthStack = () => (
     <Stack.Screen name="Signup" component={Signup} />
   </Stack.Navigator>
 );
+
 const MainTabs = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
@@ -50,9 +52,11 @@ const MainTabs = () => (
     <Tab.Screen name="Profile" component={ProfileScreen} />
   </Tab.Navigator>
 );
+
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
       setIsLoggedIn(!!user);
@@ -60,23 +64,23 @@ const App = () => {
     });
     return () => unsubscribe();
   }, []);
+
   if (loading) {
     return null; // Or a loading spinner
   }
+
   return (
-   <SafeAreaProvider>
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="SplashScreen" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="SplashScreen" component={SplashScreen} />
-        <Stack.Screen name="AuthStack" component={AuthStack} />
-        <Stack.Screen name="MainTabs" component={MainTabs} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="SplashScreen" screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="SplashScreen" component={SplashScreen} />
+          <Stack.Screen name="AuthStack" component={AuthStack} />
+          <Stack.Screen name="MainTabs" component={MainTabs} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </SafeAreaProvider>
   );
-
 };
 
 export default App;
-
 
