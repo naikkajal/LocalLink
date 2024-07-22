@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, SectionList } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { firestore, auth } from '../../firebase'; 
 import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from 'firebase/firestore';
 
@@ -76,42 +77,42 @@ const ChatScreen = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <SectionList
-        sections={messages}
-        keyExtractor={item => item.id}
-        renderItem={renderMessage}
-        renderSectionHeader={renderSectionHeader}
-      />
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder='Enter message'
-          value={message}
-          onChangeText={setMessage}
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <SectionList
+          sections={messages}
+          keyExtractor={item => item.id}
+          renderItem={renderMessage}
+          renderSectionHeader={renderSectionHeader}
+          contentContainerStyle={styles.sectionList}
         />
-        <TouchableOpacity onPress={handleSendMessage} style={styles.sendButton}>
-          <Text style={styles.sendButtonText}>Send</Text>
-        </TouchableOpacity>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder='Enter message'
+            value={message}
+            onChangeText={setMessage}
+          />
+          <TouchableOpacity onPress={handleSendMessage} style={styles.sendButton}>
+            <Text style={styles.sendButtonText}>Send</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default ChatScreen;
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#ECE5DD',
+  },
   container: {
     flex: 1,
     padding: 10,
     backgroundColor: '#ECE5DD',
-    marginTop: 20,
-  },
-  header: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginVertical: 10,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -162,13 +163,14 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   sectionHeader: {
-    backgroundColor: '#EEE',
-    padding: 5,
+    backgroundColor: '#ECE5DD',
+    alignItems: 'center',
+    paddingVertical: 2, // Reduced vertical padding
     borderRadius: 5,
-    marginVertical: 5,
+    marginVertical: 2, // Reduced vertical margin
   },
   sectionHeaderText: {
-    fontSize: 16,
+    fontSize: 14, // Optional: adjust font size if needed
     fontWeight: 'bold',
   },
 });

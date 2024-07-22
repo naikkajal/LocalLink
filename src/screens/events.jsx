@@ -58,6 +58,7 @@ const EventScreen = () => {
           <TextInput
             style={styles.input}
             placeholder='Enter event text'
+            placeholderTextColor="#999"
             value={eventText}
             onChangeText={setEventText}
           />
@@ -89,20 +90,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    marginTop: 40,
+    backgroundColor: '#fff5f5',
   },
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
+    marginTop:20
   },
   header: {
     fontSize: 30,
     fontWeight: 'bold',
+    color: '#800000',
   },
   newEventContainer: {
-    backgroundColor: 'blue',
+    backgroundColor: '#800000',
     justifyContent: 'center',
     alignItems: 'center',
     height: 50,
@@ -121,24 +124,30 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: 50,
-    borderColor: 'gray',
+    borderColor: '#800000',
+    backgroundColor:"#ffe5e5",
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
     marginVertical: 20,
+    backgroundColor: '#ffe5e5',
   },
   addButton: {
     marginLeft: 10,
     fontSize: 30,
-    color: '#4CAF50',
+    color: '#800000',
   },
   eventItem: {
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+    backgroundColor: '#ffe5e5',
+    borderRadius: 5,
+    marginBottom: 10,
   },
   eventText: {
     fontSize: 18,
+    color: '#000',
   },
   eventTimestamp: {
     fontSize: 12,
